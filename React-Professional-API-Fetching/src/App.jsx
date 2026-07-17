@@ -1,10 +1,11 @@
 import React from "react";
 import AllUsers from "./Components/AllUsers";
+import Dashboard from "./Pages/Dashboard";
 
 const App = () => {
   return (
     <div>
-      <AllUsers />
+      <Dashboard />
     </div>
   );
 };
