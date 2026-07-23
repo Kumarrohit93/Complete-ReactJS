@@ -11,6 +11,7 @@ const RegistrationForm = () => {
     age: "",
   });
   const [submitData, setSubmitData] = useState(null);
+  const [error, setError] = useState("");
 
   function handleChange(e) {
     setFormData({
@@ -22,7 +23,39 @@ const RegistrationForm = () => {
   function handleSubmit(e) {
     e.preventDefault();
 
-    setSubmitData(formData);
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.phone ||
+      !formData.city ||
+      !formData.age
+    ) {
+      setError("Please fill all fields!");
+      return;
+    }
+
+    if (!formData.email.includes("@") || !formData.email.includes(".")) {
+      setError("Please Enter a Valid Email");
+      return;
+    }
+
+    if (formData.phone.length !== 10) {
+      setError("Phone Number must be 10 digits");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Password Must be 6 or more Characters");
+      return;
+    }
+
+    if (formData.age < 18) {
+      setError("Age must be 18+");
+      return;
+    }
+
+    setError("");
 
     setFormData({
       name: "",
@@ -32,6 +65,8 @@ const RegistrationForm = () => {
       city: "",
       age: "",
     });
+
+    setSubmitData(formData);
   }
 
   console.log(formData);
@@ -44,6 +79,7 @@ const RegistrationForm = () => {
       }}
     >
       <form action="" onSubmit={handleSubmit}>
+        {error && <p style={{ color: "red" }}>{error}</p>}
         <label htmlFor="">Name</label>
         <input
           name="name"
@@ -64,16 +100,18 @@ const RegistrationForm = () => {
 
         <label htmlFor="">Password</label>
         <input
-          type="text"
+          type="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
           placeholder="Set Password"
+          min={6}
+          max={10}
         />
 
         <label htmlFor="">Phone Number</label>
         <input
-          type="text"
+          type="tel"
           name="phone"
           value={formData.phone}
           onChange={handleChange}
@@ -91,7 +129,7 @@ const RegistrationForm = () => {
 
         <label htmlFor="">Age</label>
         <input
-          type="text"
+          type="number"
           name="age"
           value={formData.age}
           onChange={handleChange}
